@@ -61,9 +61,11 @@ It is a useful tool that generates strong and random passwords for users. This p
     - Click the "Copy Password" button to copy the password to the clipboard.
  Happy coding!
 
- #### command line version
- ![CMD](password.png)
+
 
  #### Graphical User Interface
 
- ![GUI](./gui.png)
+ ![GUI](./GUI/gui.png)
+
+ #### command line version
+ ![CMD](./CLV/password.png)
