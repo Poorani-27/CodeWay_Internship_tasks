@@ -1,34 +1,70 @@
-import tkinter as tk
-import time
-from tkinter import messagebox
-root = tk.Tk()
-root.geometry("460x600")
-root.title("To DO List")
-root.config(bg="pink")
-def add():
-    task_text =task.get()
-    if task_text:
-        task_frame=tk.Frame(Display_task,bg="white")
-        task_frame.pack(fill=tk.X,padx=2,pady=5)
-        task_label = tk.Label(task_frame,width=40 ,text=task_text,bg="white",anchor="w")
-        task_label.pack(side=tk.LEFT)
-        remove_button =tk.Button(task_frame,text="remove",bg="red",fg="white", command=lambda:remove_task(task_frame))
-        remove_button.pack(side=tk.RIGHT)
-        task.delete(0, tk.END)
-    else:messagebox.showwarning("WARNING","Enter A Task")
-def remove_task(task_frame):task_frame.destroy()
-def date():
-    date=time.strftime("%A %d %B %y")
-    Display_date.config(text=date)
-Display_date= tk.Label(root,bg="pink",font=("Arial",10,"bold"),text="")
-Display_date.pack(pady=2, padx=2)
-Display_title = tk.Label(root,bg="pink",font=("Arial",16,"bold"),text="TO DO LIST")
-Display_title.pack(pady=2, padx=2)
-task = tk.Entry(root,bg="white",width=30,font=("Arial",16,"bold"))
-task.pack(pady=4,padx=2)
-Add_button=tk.Button(root,bg="blue",font=("Arial",10,"bold") ,width=20,text="ADD",height=1,command=add,pady=3)
-Add_button.pack(pady=3)
-Display_task = tk.Frame(root,bg="pink",width=2,height=3)
-Display_task.pack(pady=20)
-date()
-root.mainloop()
+import sys
+
+def find_paths(matrix, n, m):
+    def is_valid(x, y):
+        return 0 <= x < n and 0 <= y < n and matrix[x][y] != 0
+    
+    moves = {(0, 1): 'R', (1, 0): 'D', (0, -1): 'L', (-1, 0): 'U'}
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    paths = []
+    
+    stack = [((0, 0), '')]
+    
+    while stack:
+        (x, y), path = stack.pop()
+        
+        if x == n - 1 and (y == n - 1 or y == 0):
+            paths.append(path)
+            continue
+        
+        for dx, dy in directions:
+            nx, ny = x + dx, y + dy
+            if is_valid(nx, ny):
+                new_path = path + moves[(dx, dy)]
+                new_oxygen = m - matrix[nx][ny]
+                stack.append(((nx, ny), new_path))
+    
+    return paths
+
+def find_feasible_paths(matrix, n, m):
+    available_paths = find_paths(matrix, n, m)
+    feasible_paths = []
+    
+    for path in available_paths:
+        oxygen = m
+        for move in path:
+            x, y = move_to_coordinate(move)
+            oxygen -= matrix[x][y]
+            if matrix[x][y] == 9:
+                oxygen = m
+            if oxygen < 0:
+                break
+        else:
+            feasible_paths.append((path, oxygen))
+    
+    return feasible_paths
+
+def move_to_coordinate(move):
+    moves = {'R': (0, 1), 'D': (1, 0), 'L': (0, -1), 'U': (-1, 0)}
+    return moves[move]
+
+def main():
+    n = int(input())
+    matrix = [list(map(int, input().split())) for _ in range(n)]
+    m = int(input())
+
+    feasible_paths = find_feasible_paths(matrix, n, m)
+
+    if feasible_paths:
+        print("The available paths are")
+        for path in feasible_paths:
+            print(path[0])
+        print("\nThe feasible paths with remaining oxygen levels are")
+        for path, oxygen in feasible_paths:
+            print(f"{path} {oxygen}")
+    else:
+        print("No feasible path available to reach the destination")
+
+if __name__ == "__main__":
+    sys.setrecursionlimit(10**6)  # Set recursion limit
+    main()
