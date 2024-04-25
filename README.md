@@ -25,7 +25,7 @@ Here, I document every twist and turn, every triumph and challenge. This reposit
 
 - [LinkedIn](https://www.linkedin.com/in/poorani-t27/)
 
-Taks completed 16/2/24
+Taks completed 16/02/24
 
 From one code enthusiast to another, let's share the joy of coding.
 
