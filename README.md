@@ -1,7 +1,7 @@
 ﻿# CodeWay Internship Projects 🚀
 
 
-## Welcome to My Coding Adventure at CodeWay!
+## Welcome to My Coding Adventure at CodeWay
 
 ### 🌟 "Turning Dreams Into Code"
 
